@@ -1,0 +1,19 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: guest-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/guest
+    username: postgres
+    password: root
+  flyway:
+    schemas: public
+    user: postgres
+    password: root
+    enabled: true
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka
