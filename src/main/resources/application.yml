@@ -1,0 +1,26 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: guest-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/guest
+    username: postgres
+    password: root
+  flyway:
+    schemas: public
+    user: postgres
+    password: root
+    enabled: true
+  sleuth:
+    sampler:
+      percentage: 1.0
+  zipkin:
+    base-url: http://localhost:9411
+    sender:
+      type: web
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka
