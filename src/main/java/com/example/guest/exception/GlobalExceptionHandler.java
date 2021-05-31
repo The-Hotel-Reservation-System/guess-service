@@ -1,5 +1,6 @@
 package com.example.guest.exception;
 
+import brave.Tracer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -19,11 +20,14 @@ public class GlobalExceptionHandler {
   @Autowired
   GuessServiceConverter converter;
 
+  @Autowired
+  private Tracer tracer;
+
   @ExceptionHandler(GuestServiceException.class)
   public ResponseEntity<Object> handleGuestException(GuestServiceException exception) {
     log.error("GuestException", exception);
     return new ResponseEntity<>(
-        converter.toJsonNode(exception.response, StringUtils.EMPTY),
+        converter.toJsonNode(exception.response, StringUtils.EMPTY, tracer),
         new HttpHeaders(),
         exception.response.getHttpStatus()
     );
@@ -40,7 +44,8 @@ public class GlobalExceptionHandler {
                                  .getBindingResult()
                                  .getAllErrors()
                                  .get(NumberUtils.INTEGER_ZERO)
-                                 .getDefaultMessage()
+                                 .getDefaultMessage(),
+                             tracer
         ),
         new HttpHeaders(),
         HttpStatus.BAD_REQUEST);
