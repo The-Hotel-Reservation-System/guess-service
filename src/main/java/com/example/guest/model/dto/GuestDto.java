@@ -9,7 +9,6 @@ import java.math.BigInteger;
 
 @Builder
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class GuestDto {
   private BigInteger id;
