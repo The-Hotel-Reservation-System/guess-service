@@ -1,20 +1,22 @@
 package com.example.guest.exception;
 
+import brave.Tracer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GuessServiceConverter {
-  private final String ERROR_CODE = "errorCode";
-  private final String ERROR_MESSAGE = "errorMessage";
   private ObjectMapper mapper = new ObjectMapper();
+  private static final String ERROR_CODE = "errorCode";
+  private static final String ERROR_MESSAGE = "errorMessage";
+  private static final String TRACE_ID = "traceId";
 
-  public JsonNode toJsonNode(GuestServiceErrorResponse response, String extraError) {
-    ObjectNode objectNode = mapper.createObjectNode();
+  public JsonNode toJsonNode(GuestServiceErrorResponse response, String extraError, Tracer tracer) {
+    var objectNode = mapper.createObjectNode();
     objectNode.put(ERROR_CODE, response.getErrorCode());
     objectNode.put(ERROR_MESSAGE, response.getErrorMessage() + extraError);
+    objectNode.put(TRACE_ID, tracer.currentSpan().context().traceIdString());
     return objectNode;
   }
 
