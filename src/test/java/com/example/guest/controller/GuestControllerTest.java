@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
-public class GuestControllerTest {
+class GuestControllerTest {
 
   private final String EMAIL = "test@gmail.com";
   private final String NAME = "Name";
@@ -45,7 +45,7 @@ public class GuestControllerTest {
   }
 
   @Test
-  public void getGuestByGuestId_shouldWork() {
+  void getGuestByGuestId_shouldWork() {
     Mockito.when(guestService.getGuestById(Mockito.any(String.class)))
         .thenReturn(guestDto);
     ResponseEntity<GuestDto> responses = guestController.getGuest("123");
@@ -54,7 +54,7 @@ public class GuestControllerTest {
   }
 
   @Test
-  public void getAll_shouldWork() {
+  void getAll_shouldWork() {
     List<GuestDto> list = new ArrayList<>();
     GuestDto guestDto = GuestDto.builder().build();
     list.add(guestDto);
@@ -64,7 +64,7 @@ public class GuestControllerTest {
   }
 
   @Test
-  public void createGuest_shouldWork() {
+  void createGuest_shouldWork() {
     Mockito.when(guestService.createGuest(Mockito.any(CreateGuestRequest.class)))
         .thenReturn(GuestDto.builder().build());
     ResponseEntity<GuestDto> responses = guestController.createGuest(Mockito.any(CreateGuestRequest.class));
@@ -72,7 +72,7 @@ public class GuestControllerTest {
   }
 
   @Test
-  public void updateGuest_shouldWork() throws Exception {
+  void updateGuest_shouldWork() throws Exception {
     Mockito.when(guestService.updateGuest(Mockito.any(String.class), Mockito.any(UpdateRequest.class)))
         .thenReturn(GuestDto.builder().build());
     ResponseEntity<GuestDto> responses = guestController.updateGuest(Mockito.any(String.class), Mockito.any(UpdateRequest.class));
@@ -80,12 +80,11 @@ public class GuestControllerTest {
   }
 
   @Test
-  public void   deleteGuest_shouldWork() {
+  void deleteGuest_shouldWork() {
     Mockito.when(guestService.deleteGuest(Mockito.any(String.class)))
         .thenReturn(Boolean.TRUE);
     ResponseEntity<Boolean> responses = guestController.deleteGuest(Mockito.any(String.class));
     Assertions.assertEquals(HttpStatus.OK, responses.getStatusCode());
   }
-
 
 }

@@ -30,7 +30,7 @@ public class GuestServiceImpl implements GuestService {
   public GuestDto getGuestById(String guestId) {
     log.info("Get guest with id {}", guestId);
     return guestRepository.findById(new BigInteger(guestId))
-        .map(guest -> convertGuestToDto(guest))
+        .map(this::convertGuestToDto)
         .orElseThrow(() -> {
           log.error("Guest with id {} not found.", guestId);
           return new GuestServiceException(GuestServiceErrorResponse.GUEST_NOT_FOUND);
@@ -48,18 +48,17 @@ public class GuestServiceImpl implements GuestService {
   @Override
   public GuestDto createGuest(CreateGuestRequest createGuestRequest) {
     log.info("Create guest with request {}", createGuestRequest);
-    Guest guest = buildGuestModel(createGuestRequest);
+    var guest = buildGuestModel(createGuestRequest);
     return convertGuestToDto(guestRepository.save(guest));
   }
 
   private Guest buildGuestModel(CreateGuestRequest createGuestRequest) {
-    Guest guest = Guest.builder()
+    return Guest.builder()
         .phone(createGuestRequest.getPhone())
         .name(createGuestRequest.getName())
         .email(createGuestRequest.getEmail())
         .createdDate(Instant.now())
         .build();
-    return guest;
   }
 
   @Override
@@ -68,7 +67,7 @@ public class GuestServiceImpl implements GuestService {
     return guestRepository.findById(new BigInteger(guestId))
         .map(guest -> executeUpdateRequest(request, guest))
         .orElseThrow(() -> {
-          log.error("Guest with id {} not found.", guestId);
+          log.error("Guest is not found with id {} ", guestId);
           return new GuestServiceException(GuestServiceErrorResponse.GUEST_NOT_FOUND);
         });
   }

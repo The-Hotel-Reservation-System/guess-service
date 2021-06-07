@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public class GuestServiceException extends RuntimeException {
   @Getter
-  GuestServiceErrorResponse response;
+  final GuestServiceErrorResponse response;
 
   public GuestServiceException(GuestServiceErrorResponse response) {
     this.response = response;
